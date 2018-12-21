@@ -15,12 +15,26 @@
  	  <input id="username" name="username" placeholder="Enter your Email" type="text">
  	  <label for="password"><b>Password:</label>
  	  <input id="password" name="password" placeholder="Enter Password"type="password">
- 	  <button id="login-btn">Login</button>
+ 	  <button id="login-btn" onclick="onLogin()">Login</button>
     <a href="url">Forgot your password?</a>
    </div>
    <div id="mode-form">
-       <button id="register-btn">Register</button>
-       <button id="guest-btn">Try with guest Mode</button>
-     </div>
+       <button id="register-btn" onclick="onRegister()">Register</button>
+       <button id="guest-btn" onclick="onGuest()">Try with guest Mode</button>  
+    </div>
+
+    <script>
+      function onLogin() {
+          window.location.href = "./index.html";
+      }
+      function onRegister() {
+          window.location.href = "./index.html";
+      }
+      function onGuest() {
+          window.location.href = "./index.html";
+      }
+
+    </script>
+
 </body>
 </html>
