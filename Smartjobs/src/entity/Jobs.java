@@ -7,7 +7,7 @@ import org.json.JSONObject;
 
 public class Jobs {
 	private String id;
-	private boolean type;
+	private String type;
 	private String url;
 	private String created_at;
 	private String company;
@@ -40,7 +40,7 @@ public class Jobs {
 	public String getId() {
 		return id;
 	}
-	public boolean isType() {
+	public String isType() {
 		return type;
 	}
 	public String getUrl() {
@@ -93,7 +93,8 @@ public class Jobs {
 	}
 
 	public static class JobsBuilder {
-		private boolean type;
+
+		private String type;
 		private String url;
 		private String created_at;
 		private String company;
@@ -103,12 +104,12 @@ public class Jobs {
 		private String description;
 		private String how_to_apply;
 		private String company_logo;
-		
 		private String id;
+		
 		public void setId(String id) {
 			this.id = id;
 		}
-		public void setType(boolean type) {
+		public void setType(String type) {
 			this.type = type;
 		}
 		public void setUrl(String url) {
