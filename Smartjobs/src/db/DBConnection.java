@@ -88,4 +88,8 @@ public interface DBConnection {
 	 * @return boolean
 	 */
 	public boolean verifyLogin(String userId, String password);
+	
+	public String getJobTitle(String jobId);
+	
+	public String getJobLocation(String jobId);
 }
