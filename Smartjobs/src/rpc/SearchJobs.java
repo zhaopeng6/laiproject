@@ -16,6 +16,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import entity.Jobs;
+import db.DBConnection;
+import db.DBConnectionFactory;
 import external.GitHubJobsAPI;
 
 
@@ -42,23 +44,27 @@ public class SearchJobs extends HttpServlet {
     	//TEST  https://localhost:8080/Smartjobs/positions.json?lat=37.38&long=-122.08
 
     	double lat = Double.parseDouble(request.getParameter("lat"));
-		double lon = Double.parseDouble(request.getParameter("long"));
+		double lon = Double.parseDouble(request.getParameter("lon"));
 		
 		// term can be empty
 		String term= request.getParameter("term");
-		GitHubJobsAPI gjAPI = new GitHubJobsAPI();
-		List<Jobs> jobsList = gjAPI.search(lat, lon, term);
+		DBConnection connection = DBConnectionFactory.getConnection();
+
+		List<Jobs> jobsList = connection.searchJobs(lat, lon, term);
 		
-		JSONArray array = new JSONArray();
 		try {
-			for (Jobs ajob : jobsList) {
-				JSONObject obj = ajob.toJSONObject();
-				array.put(obj);
+			JSONArray array = new JSONArray();
+			for (Jobs job : jobsList) {
+				array.put(job.toJSONObject());
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		RpcHelper.writeJsonArray(response, array);					
+			RpcHelper.writeJsonArray(response, array);
+			
+		 } catch (Exception e) {
+	   	   e.printStackTrace();
+	   	   } finally {
+	   		 connection.close();
+	   	   }
+							
 	}
 
 	/**

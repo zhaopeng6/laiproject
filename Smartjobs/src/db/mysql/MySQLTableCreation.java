@@ -35,7 +35,7 @@ public class MySQLTableCreation {
 			// Step 3 Create new tables
 						sql = "CREATE TABLE jobs ("
 								+ "jobId VARCHAR(255) NOT NULL,"
-								+ "jobType BOOLEAN,"
+								+ "jobType VARCHAR(255),"
 								+ "githubLink VARCHAR(255),"
 								+ "postTime VARCHAR(255),"
 								+ "company VARCHAR(255),"
@@ -58,10 +58,11 @@ public class MySQLTableCreation {
 								+ ")";
 						stmt.executeUpdate(sql);
 						
-						sql = "CREATE TABLE categories ("
+						sql = "CREATE TABLE recommendations ("
 								+ "jobId VARCHAR(255) NOT NULL,"
-								+ "category VARCHAR(255) NOT NULL,"
-								+ "PRIMARY KEY (jobId, category),"
+								+ "jobType VARCHAR(255),"
+								+ "location VARCHAR(255),"
+								+ "PRIMARY KEY (jobId),"
 								+ "FOREIGN KEY (jobId) REFERENCES jobs(jobId)"
 								+ ")";
 						stmt.executeUpdate(sql);
