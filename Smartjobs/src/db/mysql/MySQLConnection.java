@@ -41,13 +41,43 @@ public class MySQLConnection implements DBConnection {
 
 	@Override
 	public void setFavoriteJobs(String userId, List<String> jobIds) {
-		// TODO Auto-generated method stub
-
+		  if (conn == null) {
+		   		 System.err.println("DB connection failed");
+		   		 return;
+		   	       }
+		   	 
+		   	      try {
+		   		 String sql = "INSERT IGNORE INTO history(user_id, jobId) VALUES (?, ?)";
+		   		 PreparedStatement ps = conn.prepareStatement(sql);
+		   		 ps.setString(1, userId);
+		   		 for (String jobId : jobIds) {
+		   			 ps.setString(2, jobId);
+		   			 ps.execute();
+		   		 }
+		   	       } catch (Exception e) {
+		   		 e.printStackTrace();
+		   	       }
 	}
 
 	@Override
 	public void unsetFavoriteJobs(String userId, List<String> jobIds) {
-		// TODO Auto-generated method stub
+		 if (conn == null) {
+	   		 System.err.println("DB connection failed");
+	   		 return;
+	   	       }
+	   	 
+	   	      try {
+	   		 String sql = "DELETE FROM history WHERE user_id = ? AND jobId = ?";
+	   		 PreparedStatement ps = conn.prepareStatement(sql);
+	   		 ps.setString(1, userId);
+	   		 for (String jobId : jobIds) {
+	   			 ps.setString(2, jobId);
+	   			 ps.execute();
+	   		 }
+	   		 
+	   	       } catch (Exception e) {
+	   		 e.printStackTrace();
+	   	       }
 
 	}
 
@@ -93,7 +123,7 @@ public class MySQLConnection implements DBConnection {
 	   	 // username: fakeuser ' OR 1 = 1; DROP  --
 	   	 // select * from users where username = 'fakeuser ' OR 1 = 1 --' AND password = '';
 		 try {
-	   		 String sql = "INSERT IGNORE INTO items VALUES (?, ?, ?, ?, ?, ?, ?)";
+	   		 String sql = "INSERT IGNORE INTO Jobs VALUES (?, ?, ?, ?, ?, ?, ?)";
 	   		 PreparedStatement ps = conn.prepareStatement(sql);
 	   		 ps.setString(1, job.getId());
 	   		 ps.setString(2, job.getType());
@@ -102,10 +132,10 @@ public class MySQLConnection implements DBConnection {
 	   		 ps.setString(5, job.getCompany());
 	   		 ps.setString(6, job.getCompany_url());
 	   		 ps.setString(7, job.getLocation());
-	   		 ps.setString(8, job.getTitle());
+	   		/* ps.setString(8, job.getTitle());
 	   		 ps.setString(9, job.getDescription());
 	   		 ps.setString(10, job.getHow_to_apply());
-	   		 ps.setString(11, job.getCompany_logo());
+	   		 ps.setString(11, job.getCompany_logo());*/
 	   		 ps.execute();
 	   		 
 	   	/*	 sql = "INSERT IGNORE INTO categories VALUES(?, ?)";
