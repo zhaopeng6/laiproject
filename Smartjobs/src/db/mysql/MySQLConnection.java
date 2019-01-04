@@ -123,7 +123,7 @@ public class MySQLConnection implements DBConnection {
 	   	 // username: fakeuser ' OR 1 = 1; DROP  --
 	   	 // select * from users where username = 'fakeuser ' OR 1 = 1 --' AND password = '';
 		 try {
-	   		 String sql = "INSERT IGNORE INTO Jobs VALUES (?, ?, ?, ?, ?, ?, ?)";
+	   		 String sql = "INSERT IGNORE INTO Jobs VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	   		 PreparedStatement ps = conn.prepareStatement(sql);
 	   		 ps.setString(1, job.getId());
 	   		 ps.setString(2, job.getType());
@@ -132,10 +132,10 @@ public class MySQLConnection implements DBConnection {
 	   		 ps.setString(5, job.getCompany());
 	   		 ps.setString(6, job.getCompany_url());
 	   		 ps.setString(7, job.getLocation());
-	   		/* ps.setString(8, job.getTitle());
+	   		 ps.setString(8, job.getTitle());
 	   		 ps.setString(9, job.getDescription());
 	   		 ps.setString(10, job.getHow_to_apply());
-	   		 ps.setString(11, job.getCompany_logo());*/
+	   		 ps.setString(11, job.getCompany_logo());
 	   		 ps.execute();
 	   		 
 	   	/*	 sql = "INSERT IGNORE INTO categories VALUES(?, ?)";
