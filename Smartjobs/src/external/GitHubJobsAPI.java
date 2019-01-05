@@ -31,7 +31,7 @@ public class GitHubJobsAPI {
 	
 	private static final String URL = "https://jobs.github.com/positions.json";
 	private static final String DEFAULT_KEYWORD = "material"; // no restriction
-	private static final String DEFAULT_LOCATION = "san jose";
+	private static final String DEFAUlT_LOCATION = "san jose";
 	//private static final String API_KEY = "USE_YOUR_OWN_KEY";
 	
 	public List<Jobs> search(String location, String keyword) {
@@ -46,7 +46,7 @@ public class GitHubJobsAPI {
 		} 
 		
 		if (location == null) {
-			location = DEFAULT_LOCATION;
+			location = DEFAUlT_LOCATION;
 		}
 		
 		try {
@@ -55,7 +55,7 @@ public class GitHubJobsAPI {
 			e.printStackTrace();
 		} 
 		
-		String query = String.format("description=%s&location=%s", keyword, location);
+		String query = String.format("keyword=%s&location=%s", keyword, location);
 
 	    
 		try {

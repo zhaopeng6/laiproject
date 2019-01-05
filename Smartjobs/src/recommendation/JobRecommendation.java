@@ -1,5 +1,6 @@
 package recommendation;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -21,7 +22,7 @@ import entity.Jobs.JobsBuilder;
 import external.GitHubJobsAPI;
 
 public class JobRecommendation {
-	public List<Jobs> recommendJobs (String userId) throws JSONException{
+	public List<Jobs> recommendJobs (String userId) throws JSONException, UnsupportedEncodingException{
 		
 		DBConnection connection = DBConnectionFactory.getConnection();
 		Set<String> favoritedJobIds = connection.getFavoriteJobIds(userId);
@@ -41,7 +42,7 @@ public class JobRecommendation {
 		}
 		JSONObject jobGeosJSON=GeoCoding.getGeoCoordinates(jobLocations);
 		
-		double[][] jobGeos = getGeoCoordinates(jobGeosJSON);
+		double[][] jobGeos = GeoCoding.getGeoCoordinates(jobGeosJSON);
 		
 		double recommendLat=0,recommendLng=0;
 		for(double[] coordinate:jobGeos) {
@@ -51,67 +52,9 @@ public class JobRecommendation {
 		recommendLat/=jobGeos.length;
 		recommendLng/=jobGeos.length;
 		GitHubJobsAPI ghjApi = new GitHubJobsAPI();
-		List<Jobs> recJobs = ghjApi.search(recommendLat, recommendLng, recommendTitle);
+		List<Jobs> recJobs = ghjApi.search(GeoCoding.getLocation(recommendLat,recommendLng), recommendTitle);
 		
 		return recJobs;
-	}
-	
-	private List<Jobs> getJobList(JSONArray rjobs) throws JSONException{
-		List<Jobs> result = new ArrayList<>();
-		for(int i=0;i<rjobs.length();i++) {
-			JSONObject obj = rjobs.getJSONObject(i);
-			JobsBuilder builder = new JobsBuilder();
-			if(!obj.isNull("type")) {
-				builder.setType(obj.getString("type"));
-			}
-			if(!obj.isNull("created_at")) {
-				builder.setUrl(obj.getString("created_at"));
-			}
-			if(!obj.isNull("company")) {
-				builder.setUrl(obj.getString("company"));
-			}
-			if(!obj.isNull("company_url")) {
-				builder.setUrl(obj.getString("company_url"));
-			}
-			if(!obj.isNull("location")) {
-				builder.setUrl(obj.getString("location"));
-			}
-			if(!obj.isNull("title")) {
-				builder.setUrl(obj.getString("title"));
-			}
-			if(!obj.isNull("description")) {
-				builder.setUrl(obj.getString("description"));
-			}
-			if(!obj.isNull("how_to_apply")) {
-				builder.setUrl(obj.getString("how_to_apply"));
-			}
-			if(!obj.isNull("company_logo")) {
-				builder.setUrl(obj.getString("company_logo"));
-			}
-			result.add(builder.build());
-		}
-		return result;
-	}
-	
-	private double[][] getGeoCoordinates(JSONObject GeosJSON) throws JSONException{
-		;
-		int k = 3; //KMeans cluster number
-		if(!GeosJSON.isNull("results")) {
-			JSONArray locations = GeosJSON.getJSONArray("results");
-			double[][] result = new double[locations.length()][2];
-			for(int i=0;i<locations.length();i++) {
-				JSONArray location=locations.getJSONObject(i).getJSONArray("locations");
-				//may have multiple return coordinates due to not unique city
-				//TODO: add more location parameters to make return unique
-				JSONObject latlng=location.getJSONObject(0).getJSONObject("latLng");
-				double lng = latlng.getDouble("lng");
-				double lat = latlng.getDouble("lat");
-				result[i][0] = lat; result[i][1] = lng;
-			}
-			return result;
-		}
-		
-		return new double[0][0];
 	}
 	
 	public static void main(String[] args) {

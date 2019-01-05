@@ -61,7 +61,7 @@ public interface DBConnection {
 	 *            (Nullable)
 	 * @return list of jobs
 	 */
-	public List<Jobs> searchJobs(double lat, double lon, String term);
+	public List<Jobs> searchJobs(String location, String keyword);
 
 	/**
 	 * Save job into db.

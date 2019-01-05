@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,7 +25,7 @@ import external.GitHubJobsAPI;
 /**
  * Servlet implementation class SearchJobs
  */
-@WebServlet("/SearchJobs")
+@WebServlet("/search")
 public class SearchJobs extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -40,43 +41,41 @@ public class SearchJobs extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		String location= request.getParameter("location");
+    	// allow access only if session exists
+    	HttpSession session = request.getSession(false);
+    	  if (session == null) {
+    		response.setStatus(403);
+    		return;
+    	 }
+
+    	// optional
+    	String userId = session.getAttribute("user_id").toString(); 
+    	
+    	String location= request.getParameter("location");
 		String keyword= request.getParameter("description");
+		// String userId = request.getParameter("user_id");
 		
-		GitHubJobsAPI ghjAPI = new GitHubJobsAPI();
-		List<Jobs> allJobs = ghjAPI.search(location, keyword);
+		DBConnection connection = DBConnectionFactory.getConnection();
+        try {
+		  // GitHubJobsAPI ghjAPI = new GitHubJobsAPI();
+		  List<Jobs> allJobs = connection.searchJobs(location, keyword);
+		  Set<String> favoritedJobIds = connection.getFavoriteJobIds(userId);
 		
-		JSONArray array = new JSONArray();
-		try {
+		  JSONArray array = new JSONArray();
 			for (Jobs onejob : allJobs) {
 				JSONObject obj = onejob.toJSONObject();
+				obj.put("favorite", favoritedJobIds.contains(onejob.getId()));
 				array.put(obj);
 			}
-		} catch (Exception e) {
+			RpcHelper.writeJsonArray(response, array);
+        } catch (JSONException e) {
 			e.printStackTrace();
-		}
-		RpcHelper.writeJsonArray(response, array);
-		
-    	/*
-    	response.setContentType("application/json");
-
-		PrintWriter out = response.getWriter();
-		JSONArray array = new JSONArray();
-		
-		try {
-			array.put(new JSONObject().put("username", "abcd"));
-			array.put(new JSONObject().put("username", "1234"));
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} finally {
+			connection.close();
 		}
 
-		out.print(array);
-		out.close();
-		*/
-					
 	}
+
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
