@@ -40,31 +40,42 @@ public class SearchJobs extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	
-    	//TEST  http://localhost:8080/Smartjobs/SearchJobs?lat=37.38&lon=-122.08&term=software
-
-    	double lat = Double.parseDouble(request.getParameter("lat"));
-		double lon = Double.parseDouble(request.getParameter("lon"));
 		
-		// term can be empty
-		String term= request.getParameter("term");
-		DBConnection connection = DBConnectionFactory.getConnection();
+		String location= request.getParameter("location");
+		String keyword= request.getParameter("description");
+		
+		GitHubJobsAPI ghjAPI = new GitHubJobsAPI();
+		List<Jobs> allJobs = ghjAPI.search(location, keyword);
+		
+		JSONArray array = new JSONArray();
+		try {
+			for (Jobs onejob : allJobs) {
+				JSONObject obj = onejob.toJSONObject();
+				array.put(obj);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		RpcHelper.writeJsonArray(response, array);
+		
+    	/*
+    	response.setContentType("application/json");
 
-		List<Jobs> jobsList = connection.searchJobs(lat, lon, term);
+		PrintWriter out = response.getWriter();
+		JSONArray array = new JSONArray();
 		
 		try {
-			JSONArray array = new JSONArray();
-			for (Jobs job : jobsList) {
-				array.put(job.toJSONObject());
-			}
-			RpcHelper.writeJsonArray(response, array);
-			
-		 } catch (Exception e) {
-	   	   e.printStackTrace();
-	   	   } finally {
-	   		 connection.close();
-	   	   }
-							
+			array.put(new JSONObject().put("username", "abcd"));
+			array.put(new JSONObject().put("username", "1234"));
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		out.print(array);
+		out.close();
+		*/
+					
 	}
 
 	/**

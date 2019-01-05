@@ -31,9 +31,10 @@ public class GitHubJobsAPI {
 	
 	private static final String URL = "https://jobs.github.com/positions.json";
 	private static final String DEFAULT_KEYWORD = "material"; // no restriction
+	private static final String DEFAULT_LOCATION = "san jose";
 	//private static final String API_KEY = "USE_YOUR_OWN_KEY";
 	
-	public List<Jobs> search(double lat, double lon, String keyword) {
+	public List<Jobs> search(String location, String keyword) {
 		if (keyword == null) {
 			keyword = DEFAULT_KEYWORD;
 		}
@@ -44,8 +45,17 @@ public class GitHubJobsAPI {
 			e.printStackTrace();
 		} 
 		
+		if (location == null) {
+			location = DEFAULT_LOCATION;
+		}
 		
-		String query = String.format("description=%s&lat=%s&long=%s", keyword, lat, lon);
+		try {
+			location = URLEncoder.encode(location, "UTF-8"); // Rick Sun => Rick20%Sun
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+		
+		String query = String.format("description=%s&location=%s", keyword, location);
 
 	    
 		try {
@@ -125,8 +135,8 @@ public class GitHubJobsAPI {
 	}
 	
 	
-	private void queryAPI(double lat, double lon) {
-		List<Jobs> jobsList = search(lat, lon, null);
+	private void queryAPI(String location, String keyword) {
+		List<Jobs> jobsList = search(location, keyword);
 
 		try {
 			for (Jobs aJob : jobsList) {
@@ -144,7 +154,7 @@ public class GitHubJobsAPI {
 	public static void main(String[] args) {
 		GitHubJobsAPI ghjApi = new GitHubJobsAPI();
 		// Mountain View, CA
-		ghjApi.queryAPI(37.38, -122.08);
+		ghjApi.queryAPI("mountain view", "data scientist");
 		// London, UK
 		// ghjApi.queryAPI(51.503364, -0.12);
 		// Houston, TX
