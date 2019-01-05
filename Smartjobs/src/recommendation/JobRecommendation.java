@@ -21,7 +21,7 @@ import entity.Jobs.JobsBuilder;
 import external.GitHubJobsAPI;
 
 public class JobRecommendation {
-	public List<Jobs> recommendJobs (String userId, String address) throws JSONException{
+	public List<Jobs> recommendJobs (String userId) throws JSONException{
 		
 		DBConnection connection = DBConnectionFactory.getConnection();
 		Set<String> favoritedJobIds = connection.getFavoriteJobIds(userId);

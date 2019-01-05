@@ -41,7 +41,7 @@ public class SearchJobs extends HttpServlet {
 	 */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	
-    	//TEST  https://localhost:8080/Smartjobs/positions.json?lat=37.38&long=-122.08
+    	//TEST  http://localhost:8080/Smartjobs/SearchJobs?lat=37.38&lon=-122.08&term=software
 
     	double lat = Double.parseDouble(request.getParameter("lat"));
 		double lon = Double.parseDouble(request.getParameter("lon"));
