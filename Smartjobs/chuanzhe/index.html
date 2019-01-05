@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="Job Recommendation">
+  <meta name="author" content="chuanzhe">
+  <title>Job Recommendation Final</title>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="main.css">
+</head>
+<body>
+  <header class="top-header">
+        <a href="#">Home</a>
+      <a href="#">Contact</a>
+      <a href="#">About</a>
+    <a id="login-link" href="./login.html">Login</a>
+    <i id="avatar" class="avatar fa fa-user fa-2x"></i>
+    <div id ="summary">Summary board
+      <br>
+      <span> Job Interested: 50 </span>
+      <br>
+      <span> Job Applied: 20 </span>
+    </div>
+  </header>
+  
+  <div class="container">
+    <header>
+    </header>
+
+    <section class="main-section">
+      <aside id="item-nav">
+        <div class="nav-icon">
+          <i class="fa fa-sitemap fa-2x"></i>
+        </div>
+        <nav class="main-nav">
+          <a href="#" id="nearby-btn" class="main-nav-btn active">
+            <i class="fa fa-search"></i> Job Search
+          </a>
+          <a href="#" id="fav-btn" class="main-nav-btn">
+            <i class="fa fa-heart"></i> My Job Information
+          </a>
+          <a href="#" id="recommend-btn" class="main-nav-btn">
+            <i class="fa fa-thumbs-up"></i> Recommendation
+          </a>
+        </nav>
+      </aside>
+
+      <div id="search-form">
+ 	    <label for="keywords">Key Words:</label>
+ 	    <input id="keywords" name="keywords" type="text">
+ 	    <label for="jobtype">Job Type:</label>
+        <select>
+        <option value="intern">intern</option>
+        <option value="full-time">full-time</option>
+        </select
+ 	    <label for="city">City:</label>
+      <select>
+        <option value="Alaska">Alaska</option>
+        <option value="Boston">Boston</option>
+        <option value="Los Angeles">Los Angeles</option>
+        <option value="Seattle">Seattle</option>
+      </select
+ 	    <label for="zipcode">ZipCode:</label>
+ 	    <input id="zipcode" name="zipcode" type="password">
+ 	    <label for="company">Company:</label>
+ 	    <input id="company" name="company" type="password">
+ 	    <button id="search">Find Jobs</button>
+ 	    <p id="login-error"></p>
+    </div>
+    </section>
+  </div>
+  
+  <footer>
+   <!--  <p class="title">What We Do</p>
+    <p>"Help you find the best place around."</p>
+    <ul>
+      <li>
+        <p><i class="fa fa-map-o fa-2x"></i></p>
+        <p>LaiOffer office, CA</p>
+      </li>
+      <li>
+        <p><i class="fa fa-envelope-o fa-2x"></i></p>
+        <p>info@laioffer.com</p>
+      </li>
+      <li>
+        <p><i class="fa fa-phone fa-2x"></i></p>
+        <p>+1 800 123 456</p>
+      </li>
+    </ul> -->
+  </footer>
+</body>
+</html>
