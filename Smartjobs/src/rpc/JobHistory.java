@@ -3,6 +3,7 @@ package rpc;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,10 +12,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import db.DBConnection;
 import db.DBConnectionFactory;
+import entity.Jobs;
 
 /**
  * Servlet implementation class JobHistory
@@ -31,13 +34,33 @@ public class JobHistory extends HttpServlet {
         // TODO Auto-generated constructor stub
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+    /**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		String userId = request.getParameter("user_id");
+		JSONArray array = new JSONArray();
+		
+		DBConnection conn = DBConnectionFactory.getConnection();
+		try {
+			Set<Jobs> jobs = conn.getFavoriteJobs(userId);
+			for (Jobs job : jobs) {
+				JSONObject obj = job.toJSONObject();
+				obj.append("favorite", true);
+				array.put(obj);
+			}
+			
+			RpcHelper.writeJsonArray(response, array);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		} finally {
+			conn.close();
+		}
+
 	}
+
 
 	/**
      * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)

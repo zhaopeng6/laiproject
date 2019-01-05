@@ -60,7 +60,7 @@ public class MySQLTableCreation {
 						
 						sql = "CREATE TABLE recommendations ("
 								+ "jobId VARCHAR(255) NOT NULL,"
-								+ "jobType VARCHAR(255),"
+								+ "jobTitle VARCHAR(255),"
 								+ "location VARCHAR(255),"
 								+ "PRIMARY KEY (jobId),"
 								+ "FOREIGN KEY (jobId) REFERENCES jobs(jobId)"
