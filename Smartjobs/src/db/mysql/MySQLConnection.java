@@ -1,5 +1,6 @@
 package db.mysql;
 
+import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -9,10 +10,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.json.JSONException;
+
 import db.DBConnection;
 import entity.Jobs;
 import entity.Jobs.JobsBuilder;
 import external.GitHubJobsAPI;
+import recommendation.GeoCoding;
 
 public class MySQLConnection implements DBConnection {
 	
@@ -156,8 +160,8 @@ public class MySQLConnection implements DBConnection {
 	@Override
 	public List<Jobs> searchJobs(String location, String keyword) {
 		GitHubJobsAPI gjAPI = new GitHubJobsAPI();
+
 		List<Jobs> jobsList = gjAPI.search(location, keyword);
-		
 		   for(Jobs job : jobsList) {
 		   		 saveJob(job);
 		   	        }
