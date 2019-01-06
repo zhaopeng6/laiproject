@@ -252,45 +252,41 @@ public class MySQLConnection implements DBConnection {
 	}
 
 	@Override
-	public Set<String> getJobTitle(String jobId) {
+	public String getJobTitle(String jobId) {
 		if (conn == null) {
 			return null;
 		}
-		Set<String> recJobTitle = new HashSet<>();
 		try {
-			String sql = "SELECT jobTitle from recommendations WHERE jobId = ? ";
+			String sql = "SELECT jobTitle from jobs WHERE jobId = ? ";
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setString(1, jobId);
 			ResultSet rs = statement.executeQuery();
-			while (rs.next()) {
-				String jobTitle = rs.getString("jobTitle");
-				recJobTitle.add(jobTitle);
+			if (rs.next()) {
+				return rs.getString("jobTitle");
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
-		return recJobTitle;
+		return "";
 	}
 
 	@Override
-	public Set<String> getJobLocation(String jobId) {
+	public String getJobLocation(String jobId) {
 		if (conn == null) {
 			return null;
 		}
-		Set<String> jobLocation = new HashSet<>();
 		try {
-			String sql = "SELECT location from recommendations WHERE jobId = ? ";
+			String sql = "SELECT location from jobs WHERE jobId = ? ";
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setString(1, jobId);
 			ResultSet rs = statement.executeQuery();
-			while (rs.next()) {
-				String location = rs.getString("location");
-				jobLocation.add(location);
+			if (rs.next()) {
+				return rs.getString("location");
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
-		return jobLocation;
+		return "";
 	}
 
 }

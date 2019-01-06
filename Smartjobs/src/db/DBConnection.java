@@ -78,7 +78,7 @@ public interface DBConnection {
 	 */
 	public boolean verifyLogin(String userId, String password);
 	
-	public Set<String> getJobTitle(String jobId);
+	public String getJobTitle(String jobId);
 	
-	public Set<String> getJobLocation(String jobId);
+	public String getJobLocation(String jobId);
 }

@@ -30,14 +30,10 @@ public class JobRecommendation {
 		Map<String, Integer> allTitles = new HashMap<>();
 		List<String> jobLocations=new ArrayList<>();
 		for(String jobId:favoritedJobIds) {
-			Set<String> title = connection.getJobTitle(jobId);
-			for (String jobtitle : title) {
-				allTitles.put(jobtitle, allTitles.getOrDefault(jobtitle,0)+1);
-			}
-			Set<String> location = connection.getJobLocation(jobId);
-			for (String joblocation: location) {
-				jobLocations.add(joblocation);
-			}
+			String title = connection.getJobTitle(jobId);
+			allTitles.put(title, allTitles.getOrDefault(title,0)+1);
+			String location = connection.getJobLocation(jobId);
+			jobLocations.add(location);
 		}
 		
 		List<Entry<String,Integer>> titleList = new ArrayList<>(allTitles.entrySet());
