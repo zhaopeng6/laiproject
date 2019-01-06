@@ -164,9 +164,9 @@ public class MySQLConnection implements DBConnection {
 		List<Jobs> jobsList = gjAPI.search(location, keyword);
 		   for(Jobs job : jobsList) {
 		   		 saveJob(job);
-		   	        }
+		   }
 		   	 
-		   	        return jobsList;
+		   return jobsList;
 	}
 
 	@Override
