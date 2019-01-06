@@ -196,14 +196,13 @@ public class MySQLConnection implements DBConnection {
 	   		 ps.setString(11, job.getCompany_logo());
 	   		 ps.execute();
 	   		 
-	   	/*	 sql = "INSERT IGNORE INTO categories VALUES(?, ?)";
+	   	     sql = "INSERT IGNORE INTO recommendations VALUES(?, ?, ?)";
 	   		 ps = conn.prepareStatement(sql);
-	   		 ps.setString(1, item.getItemId());
-	   		 for(String category : item.getCategories()) {
-	   			 ps.setString(2, category);
-	   			 ps.execute();
-	   		 } */
-	   		 
+	   		 ps.setString(1, job.getId());
+	   		 ps.setString(2, job.getTitle());
+	   		 ps.setString(3, job.getLocation());
+	   		 ps.execute();
+	   			   		 
 	   	 } catch (Exception e) {
 	   		 e.printStackTrace();
 	   	 }
@@ -253,22 +252,45 @@ public class MySQLConnection implements DBConnection {
 	}
 
 	@Override
-	public String getJobTitle(String jobId) {
-		// TODO Auto-generated method stub
-		return null;
+	public Set<String> getJobTitle(String jobId) {
+		if (conn == null) {
+			return null;
+		}
+		Set<String> recJobTitle = new HashSet<>();
+		try {
+			String sql = "SELECT jobTitle from recommendations WHERE jobId = ? ";
+			PreparedStatement statement = conn.prepareStatement(sql);
+			statement.setString(1, jobId);
+			ResultSet rs = statement.executeQuery();
+			while (rs.next()) {
+				String jobTitle = rs.getString("jobTitle");
+				recJobTitle.add(jobTitle);
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return recJobTitle;
 	}
 
 	@Override
-	public String getJobLocation(String jobId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
-	public Set<String> getCategories(String itemId) {
-		// TODO Auto-generated method stub
-		return null;
+	public Set<String> getJobLocation(String jobId) {
+		if (conn == null) {
+			return null;
+		}
+		Set<String> jobLocation = new HashSet<>();
+		try {
+			String sql = "SELECT location from recommendations WHERE jobId = ? ";
+			PreparedStatement statement = conn.prepareStatement(sql);
+			statement.setString(1, jobId);
+			ResultSet rs = statement.executeQuery();
+			while (rs.next()) {
+				String location = rs.getString("location");
+				jobLocation.add(location);
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return jobLocation;
 	}
 
 }

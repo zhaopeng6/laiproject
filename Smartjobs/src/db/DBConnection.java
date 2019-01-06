@@ -49,18 +49,7 @@ public interface DBConnection {
 	 * @param jobId
 	 * @return set of categories
 	 */
-	public Set<String> getCategories(String itemId);
 
-	/**
-	 * Search items near a geolocation and a term (optional).
-	 * 
-	 * @param userId
-	 * @param lat
-	 * @param lon
-	 * @param term
-	 *            (Nullable)
-	 * @return list of jobs
-	 */
 	public List<Jobs> searchJobs(String location, String keyword);
 
 	/**
@@ -89,7 +78,7 @@ public interface DBConnection {
 	 */
 	public boolean verifyLogin(String userId, String password);
 	
-	public String getJobTitle(String jobId);
+	public Set<String> getJobTitle(String jobId);
 	
-	public String getJobLocation(String jobId);
+	public Set<String> getJobLocation(String jobId);
 }

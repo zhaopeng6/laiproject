@@ -26,14 +26,20 @@ public class JobRecommendation {
 		
 		DBConnection connection = DBConnectionFactory.getConnection();
 		Set<String> favoritedJobIds = connection.getFavoriteJobIds(userId);
+		
 		Map<String, Integer> allTitles = new HashMap<>();
 		List<String> jobLocations=new ArrayList<>();
 		for(String jobId:favoritedJobIds) {
-			String title = connection.getJobTitle(jobId);
-			String location = connection.getJobLocation(jobId);
-			allTitles.put(title, allTitles.getOrDefault(title,0)+1);
-			jobLocations.add(location);
+			Set<String> title = connection.getJobTitle(jobId);
+			for (String jobtitle : title) {
+				allTitles.put(jobtitle, allTitles.getOrDefault(jobtitle,0)+1);
+			}
+			Set<String> location = connection.getJobLocation(jobId);
+			for (String joblocation: location) {
+				jobLocations.add(joblocation);
+			}
 		}
+		
 		List<Entry<String,Integer>> titleList = new ArrayList<>(allTitles.entrySet());
 		Collections.sort(titleList, (e1,e2)->Integer.compare(e2.getValue(), e1.getValue()));
 		String recommendTitle = "";

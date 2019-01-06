@@ -21,7 +21,7 @@ import recommendation.JobRecommendation;
 /**
  * Servlet implementation class RecommendJobs
  */
-@WebServlet("/RecommendJobs")
+@WebServlet("/recommendations")
 public class RecommendJobs extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

@@ -70,6 +70,7 @@ public class MySQLTableCreation {
 						sql = "CREATE TABLE history ("
 								+ "user_id VARCHAR(255) NOT NULL,"
 								+ "jobId VARCHAR(255) NOT NULL,"
+								+ "status VARCHAR(255) NOT NULL DEFAULT 'LIKED',"
 								+ "last_favor_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,"
 								+ "PRIMARY KEY (user_id, jobId),"
 								+ "FOREIGN KEY (user_id) REFERENCES users(user_id),"
@@ -78,7 +79,7 @@ public class MySQLTableCreation {
 						stmt.executeUpdate(sql);
 						
 			// Step 4: insert fake user 1111/3229c1097c00d497a0fd282d586be050
-						sql = "INSERT INTO users VALUES ('1111', '3229c1097c00d497a0fd282d586be050', 'John', 'Smith')";
+						sql = "INSERT INTO users VALUES ('1111', '2222', 'Offer', 'Wanted')";
 						stmt.executeUpdate(sql);
 
 			
